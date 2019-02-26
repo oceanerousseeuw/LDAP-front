@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+
+    <h1>Connexion</h1>
+
+<form id="connect" method="post">
+    <p>
+        <label for="username">username : </label>
+        <input type="text" name="username" id="username" />
+    </p>
+
+    <p>
+        <label for="password">password : </label>
+        <input type="password" name="password" id="password" />
+    </p>
+
+    <p>
+        <input type="submit" value="Connexion">
+    </p>
+
+</form>
+
+<a href="index.html">Retour</a>
+
+<script>
+    $("#connect").submit(function(e){
+        var myData = {
+            "username": $("#username").val(),
+            "password" : $("#password").val()
+        };
+        if(myData['username'] === "" || myData['password'] === ""){
+            alert("Veuillez remplir tous les champs");
+        }else {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                url: "http://localhost:3000/connect",
+                data: JSON.stringify({...myData}),
+                success: function (result) {
+                    var currentUrl = window.location;
+                    var currentUrlSplit = currentUrl.href.split("/");
+                    var newUrl = "";
+                    for(var i=0; i<currentUrlSplit.length-1; i++){
+                        newUrl+= currentUrlSplit[i] + "/";
+                    }
+                    newUrl+= "users.html";
+                    window.location.replace(newUrl);
+                },
+                error: function (result) {
+                    console.error(result);
+                }
+            });
+        }
+    });
+</script>
+
+</body>
+
+</html> 

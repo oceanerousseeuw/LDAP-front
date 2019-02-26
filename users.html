@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+<h1>Liste des users</h1>
+
+<table id="table-users">
+    <tr>
+        <th>uidNumber</th>
+        <th>uid</th>
+        <th>sn</th>
+        <th>givenName</th>
+    </tr>
+</table>
+
+<input type="button" id="exportUsersJson" value="exporter les données au format json"/>
+
+
+<div>
+    <input type="button" id="modifUser" value="modifier un user"/>
+    <div style="display:none;" id="modifUserForm">
+        <form id="modif" method="post">
+            <p>
+                <label for="loginModif">login : </label>
+                <input type="text" name="loginModif" id="loginModif"/>
+            </p>
+
+            <p>
+                <label for="passwordModif">password : </label>
+                <input type="text" name="passwordModif" id="passwordModif"/>
+            </p>
+
+            <p>
+                <label for="lastnameModif">lastname : </label>
+                <input type="text" name="lastnameModif" id="lastnameModif"/>
+            </p>
+
+            <p>
+                <label for="firstnameModif">firstname : </label>
+                <input type="text" name="firstnameModif" id="firstnameModif"/>
+            </p>
+
+            <p>
+                <input type="submit" value="Modifier" id="modifUserButton">
+            </p>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <input type="button" id="deleteUser" value="supprimer un user"/>
+    <div style="display:none;" id="deleteUserForm">
+        <form id="delete" method="post">
+            <p>
+                <label for="uidDelete">Uid : </label>
+                <input type="text" name="uidDelete" id="uidDelete"/>
+            </p>
+
+            <p>
+                <input type="submit" value="Supprimer" id="deleteUserButton">
+            </p>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <input type="button" id="addUser" value="ajouter un user"/>
+    <div style="display:none;" id="addUserForm">
+        <form id="add" method="post">
+            <p>
+                <label for="loginAdd">login : </label>
+                <input type="text" name="loginAdd" id="loginAdd"/>
+            </p>
+
+            <p>
+                <label for="passwordAdd">password : </label>
+                <input type="text" name="passwordAdd" id="passwordAdd"/>
+            </p>
+
+            <p>
+                <label for="lastnameAdd">lastname : </label>
+                <input type="text" name="lastnameAdd" id="lastnameAdd"/>
+            </p>
+
+            <p>
+                <label for="firstnameAdd">firstname : </label>
+                <input type="text" name="firstnameAdd" id="firstnameAdd"/>
+            </p>
+
+            <p>
+                <input type="submit" value="Ajouter" id="addUserButton">
+            </p>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            url: "http://localhost:3000/users",
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    var uidNumber = result[i].uidNumber;
+                    var uid = result[i].uid;
+                    var sn = result[i].sn;
+                    var givenName = result[i].givenName;
+
+                    $("#table-users").append("<tr><td>" + uidNumber + "</td><td>" + uid + "</td><td>" + sn + "</td><td>" + givenName + "</td></tr>");
+                }
+            },
+            error(result) {
+                console.error(result);
+            }
+        });
+    });
+
+    document.getElementById("exportUsersJson").addEventListener("click", async function () {
+        var exportResult = [];
+        await exportJson(exportResult);
+        if (exportResult[0]) {
+            var filename = "exportUsersJson.json";
+
+            download(filename, exportResult[0]);
+        } else {
+            alert('Rien à exporter !')
+        }
+    }, false);
+
+    async function exportJson(exportResult) {
+        $.ajax({
+            url: "http://localhost:3000/users/exportJson",
+            async: false,
+            success: function (result) {
+                exportResult.push(result);
+                return result;
+            }
+        });
+    }
+
+    function download(filename, content) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
+
+    document.getElementById("modifUser").addEventListener("click", async function () {
+        document.getElementById("modifUserForm").style.display = "block";
+        document.getElementById("deleteUserForm").style.display = "none";
+        document.getElementById("addUserForm").style.display = "none";
+    });
+    document.getElementById("deleteUser").addEventListener("click", async function () {
+        document.getElementById("deleteUserForm").style.display = "block";
+        document.getElementById("modifUserForm").style.display = "none";
+        document.getElementById("addUserForm").style.display = "none";
+    });
+    document.getElementById("addUser").addEventListener("click", async function () {
+        document.getElementById("addUserForm").style.display = "block";
+        document.getElementById("deleteUserForm").style.display = "none";
+        document.getElementById("modifUserForm").style.display = "none";
+    });
+</script>
+
+</body>
+
+</html> 

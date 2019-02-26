@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+<h1>Liste des groups</h1>
+
+<table id="table-groups">
+    <tr>
+        <th>cn</th>
+        <th>gidNumber</th>
+        <th>memberUid(s) si existe(nt)</th>
+        <th>description (si renseignée)</th>
+    </tr>
+</table>
+
+<input type="button" id="exportGroupsJson" value="exporter les données au format json"/>
+
+<div>
+    <input type="button" id="modifGroup" value="modifier un groupe"/>
+    <div style="display:none;" id="modifGroupForm">
+        <form id="modif" method="post">
+            <p>
+                <label for="cn">cn : </label>
+                <input type="text" name="cn" id="cn"/>
+            </p>
+
+            <p>
+                <label for="labelGroupModif">Champ à modifier : </label>
+                <select id="labelGroupModif">
+                    <option value="">--Choisis une option--</option>
+                    <option value="description">description</option>
+                    <option value="memberUid">memberUid</option>
+                </select>
+            </p>
+
+            <p>
+                <label for="valueModif">Nouvelle valeur : </label>
+                <input type="text" name="valueModif" id="valueModif"/>
+            </p>
+
+            <p>
+                <input type="submit" value="Modifier" id="modifGroupButton">
+            </p>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <input type="button" id="deleteGroup" value="supprimer un groupe"/>
+    <div style="display:none;" id="deleteGroupForm">
+        <form id="delete" method="post">
+            <p>
+                <label for="cnDelete">cn : </label>
+                <input type="text" name="cnDelete" id="cnDelete"/>
+            </p>
+
+            <p>
+                <input type="submit" value="Supprimer" id="deleteGroupButton">
+            </p>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <input type="button" id="addGroup" value="ajouter un groupe"/>
+    <div style="display:none;" id="addGroupForm">
+        <form id="add" method="post">
+            <p>
+                <label for="cnAdd">cn : </label>
+                <input type="text" name="cnAdd" id="cnAdd"/>
+            </p>
+
+            <p>
+                <label for="descriptionAdd">Description : </label>
+                <input type="text" name="descriptionAdd" id="descriptionAdd"/>
+            </p>
+
+            <p>
+                <input type="submit" value="Ajouter" id="addGroupButton">
+            </p>
+
+        </form>
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "http://localhost:3000/groups",
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    var cn = result[i].cn;
+                    var gidNumber = result[i].gidNumber;
+
+                    var memberUidTable = [];
+                    if (result[i].memberUid) {
+                        memberUidTable.push(result[i].memberUid);
+                    }
+
+                    var membersUidString = "";
+
+                    for (var j = 0; j < memberUidTable.length; j++) {
+                        membersUidString += memberUidTable[j] + ", ";
+                    }
+                    var description = "";
+                    if (result[i].description) {
+                        description = result[i].description;
+                    }
+
+                    $("#table-groups").append("<tr><td>" + cn + "</td><td>" + gidNumber + "</td><td>" + membersUidString + "</td><td>" + description + "</td></tr>");
+                }
+            },
+            error(result) {
+                console.error(result);
+            }
+        });
+    });
+
+
+    document.getElementById("exportGroupsJson").addEventListener("click", async function () {
+        var exportResult = [];
+        await exportJson(exportResult);
+        if (exportResult[0]) {
+            var filename = "exportGroupsJson.json";
+
+            download(filename, exportResult[0]);
+        } else {
+            alert('Rien à exporter !')
+        }
+    }, false);
+
+    async function exportJson(exportResult) {
+        $.ajax({
+            url: "http://localhost:3000/groups/exportJson",
+            async: false,
+            success: function (result) {
+                exportResult.push(result);
+                return result;
+            }
+        });
+    }
+
+    function download(filename, content) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
+
+
+    document.getElementById("modifGroup").addEventListener("click", async function () {
+        document.getElementById("modifGroupForm").style.display = "block";
+        document.getElementById("deleteGroupForm").style.display = "none";
+        document.getElementById("addGroupForm").style.display = "none";
+    });
+    document.getElementById("deleteGroup").addEventListener("click", async function () {
+        document.getElementById("deleteGroupForm").style.display = "block";
+        document.getElementById("modifGroupForm").style.display = "none";
+        document.getElementById("addGroupForm").style.display = "none";
+    });
+    document.getElementById("addGroup").addEventListener("click", async function () {
+        document.getElementById("addGroupForm").style.display = "block";
+        document.getElementById("deleteGroupForm").style.display = "none";
+        document.getElementById("modifGroupForm").style.display = "none";
+    });
+</script>
+
+</body>
+
+</html> 
