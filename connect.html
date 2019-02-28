@@ -9,6 +9,15 @@
 
 <body>
 
+    <div class="navabar">
+        <ul>
+            <li><a href="index.html">Index</a></li>
+            <li><a href="connect.html">Connexion</a></li>
+            <li><a href="users.html">Utilisateurs</a></li>
+            <li><a href="groups.html">Groupes</a></li>
+        </ul>
+    </div>
+
     <h1>Connexion</h1>
 
 <form id="connect" method="post">
@@ -58,6 +67,7 @@
                 },
                 error: function (result) {
                     console.error(result);
+                    alert('Invalid Credentials');
                 }
             });
         }
