@@ -18,26 +18,30 @@
         </ul>
     </div>
 
-    <h1>Connexion</h1>
+    <div class="page-content">
 
-    <form id="connect" method="post">
-        <p>
-            <label for="username">username : </label>
-            <input type="text" name="username" id="username" />
-        </p>
+        <h1>Connexion</h1>
 
-        <p>
-            <label for="password">password : </label>
-            <input type="password" name="password" id="password" />
-        </p>
+        <form id="connect" method="post">
+            <p>
+                <label for="username">username : </label>
+                <input type="text" name="username" id="username" />
+            </p>
 
-        <p>
-            <input type="submit" value="Connexion">
-        </p>
+            <p>
+                <label for="password">password : </label>
+                <input type="password" name="password" id="password" />
+            </p>
 
-    </form>
+            <p>
+                <input type="submit" value="Connexion">
+            </p>
 
-    <a href="index.html">Retour</a>
+        </form>
+
+        <a href="index.html" class="button">Retour</a>
+
+    </div>
 
     <script>
         $("#connect").submit(function (e) {

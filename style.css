@@ -12,6 +12,9 @@ th, td{
 table{
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
+    width: 95%;
+    margin: auto;
+    margin-bottom: 15px;
 }
 
 .navbar{
@@ -32,4 +35,42 @@ table{
 
 .navbar li {
     margin : 10px;
+}
+
+.page-content{
+    margin: 10px;
+}
+
+a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    color: initial;
+}
+
+.information {
+    margin: 10px;
+    padding: 10px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.function-button{
+    margin:5px;
+    width: 120px;
+}
+
+form{
+    margin: 15px;
+    padding: 15px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.form-title{
+    margin: auto;
+    text-align: center;
+    font-weight: bold;
 }

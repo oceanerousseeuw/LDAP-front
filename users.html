@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
@@ -17,93 +18,96 @@
         </ul>
     </div>
 
-    <h1>Liste des users</h1>
+    <div class="page-content">
 
-    <table id="table-users">
+        <h1>Liste des users</h1>
 
-    </table>
+        <table id="table-users"></table>
 
-    <input type="button" id="exportUsersJson" value="exporter les données au format json" />
+        <input type="button" id="exportUsersJson" class="function-button" value="exporter" />
 
+        <div>
+            <input type="button" id="modifUser" class="function-button" value="modifier" />
+            <div style="display:none;" id="modifUserForm">
+                <form id="modifForm" method="post">
+                    <div class="form-title">Modification</div>
+                    <p>
+                        <label for="loginModif">login : </label>
+                        <input type="text" name="loginModif" id="loginModif" />
+                    </p>
 
-    <div>
-        <input type="button" id="modifUser" value="modifier un user" />
-        <div style="display:none;" id="modifUserForm">
-            <form id="modifForm" method="post">
-                <p>
-                    <label for="loginModif">login de l'utilisateur a modifié : </label>
-                    <input type="text" name="loginModif" id="loginModif" />
-                </p>
+                    <p>
+                        <label for="passwordModif">password : </label>
+                        <input type="text" name="passwordModif" id="passwordModif" />
+                    </p>
 
-                <p>
-                    <label for="passwordModif">password : </label>
-                    <input type="text" name="passwordModif" id="passwordModif" />
-                </p>
+                    <p>
+                        <label for="lastnameModif">lastname : </label>
+                        <input type="text" name="lastnameModif" id="lastnameModif" />
+                    </p>
 
-                <p>
-                    <label for="lastnameModif">lastname : </label>
-                    <input type="text" name="lastnameModif" id="lastnameModif" />
-                </p>
+                    <p>
+                        <label for="firstnameModif">firstname : </label>
+                        <input type="text" name="firstnameModif" id="firstnameModif" />
+                    </p>
 
-                <p>
-                    <label for="firstnameModif">firstname : </label>
-                    <input type="text" name="firstnameModif" id="firstnameModif" />
-                </p>
+                    <p>
+                        <input type="submit" value="Valider" id="modifUserButton">
+                    </p>
 
-                <p>
-                    <input type="submit" value="Modifier" id="modifUserButton">
-                </p>
-
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <div>
-        <input type="button" id="deleteUser" value="supprimer un user" />
-        <div style="display:none;" id="deleteUserForm">
-            <form id="deleteForm" method="post">
-                <p>
-                    <label for="uidDelete">Uid : </label>
-                    <input type="text" name="uidDelete" id="uidDelete" />
-                </p>
+        <div>
+            <input type="button" id="deleteUser" class="function-button" value="supprimer" />
+            <div style="display:none;" id="deleteUserForm">
+                <form id="deleteForm" method="post">
+                    <div class="form-title">Suppression</div>
+                    <p>
+                        <label for="uidDelete">Uid : </label>
+                        <input type="text" name="uidDelete" id="uidDelete" />
+                    </p>
 
-                <p>
-                    <input type="submit" value="Supprimer" id="deleteUserButton">
-                </p>
+                    <p>
+                        <input type="submit" value="Valider" id="deleteUserButton">
+                    </p>
 
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <div>
-        <input type="button" id="addUser" value="ajouter un user" />
-        <div style="display:none;" id="addUserForm">
-            <form id="addForm" method="post">
-                <p>
-                    <label for="loginAdd">login : </label>
-                    <input type="text" name="loginAdd" id="loginAdd" />
-                </p>
+        <div>
+            <input type="button" id="addUser" class="function-button" value="ajouter" />
+            <div style="display:none;" id="addUserForm">
+                <form id="addForm" method="post">
+                    <div class="form-title">Ajout</div>
+                    <p>
+                        <label for="loginAdd">login : </label>
+                        <input type="text" name="loginAdd" id="loginAdd" />
+                    </p>
 
-                <p>
-                    <label for="passwordAdd">password : </label>
-                    <input type="text" name="passwordAdd" id="passwordAdd" />
-                </p>
+                    <p>
+                        <label for="passwordAdd">password : </label>
+                        <input type="text" name="passwordAdd" id="passwordAdd" />
+                    </p>
 
-                <p>
-                    <label for="lastnameAdd">lastname : </label>
-                    <input type="text" name="lastnameAdd" id="lastnameAdd" />
-                </p>
+                    <p>
+                        <label for="lastnameAdd">lastname : </label>
+                        <input type="text" name="lastnameAdd" id="lastnameAdd" />
+                    </p>
 
-                <p>
-                    <label for="firstnameAdd">firstname : </label>
-                    <input type="text" name="firstnameAdd" id="firstnameAdd" />
-                </p>
+                    <p>
+                        <label for="firstnameAdd">firstname : </label>
+                        <input type="text" name="firstnameAdd" id="firstnameAdd" />
+                    </p>
 
-                <p>
-                    <input type="submit" value="Ajouter" id="addUserButton">
-                </p>
+                    <p>
+                        <input type="submit" value="Valider" id="addUserButton">
+                    </p>
 
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -129,6 +133,7 @@
                     }
                 },
                 error(result) {
+                    $("#table-users").append("<tr><td>" + 'no data' + "</td><td>" + 'no data' + "</td><td>" + 'no data' + "</td><td>" + 'no data' + "</td></tr>");
                     console.error(result);
                 }
             });
