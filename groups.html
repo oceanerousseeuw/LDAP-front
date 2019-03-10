@@ -29,11 +29,11 @@
         <div>
             <input type="button" id="modifGroup" class="function-button" value="modifier" />
             <div style="display:none;" id="modifGroupForm">
-                <form id="modif" method="post">
+                <form id="modifForm" method="post">
                     <div class="form-title">Modification</div>
                     <p>
                         <label for="cn">cn : </label>
-                        <input type="text" name="cn" id="cn" />
+                        <input type="text" name="cnModif" id="cn" />
                     </p>
 
                     <p>
@@ -61,7 +61,7 @@
         <div>
             <input type="button" id="deleteGroup" class="function-button" value="supprimer" />
             <div style="display:none;" id="deleteGroupForm">
-                <form id="delete" method="post">
+                <form id="deleteForm" method="post">
                     <div class="form-title">Suppression</div>
                     <p>
                         <label for="cnDelete">cn : </label>
@@ -79,7 +79,7 @@
         <div>
             <input type="button" id="addGroup" class="function-button" value="ajouter" />
             <div style="display:none;" id="addGroupForm">
-                <form id="add" method="post">
+                <form id="addForm" method="post">
                     <div class="form-title">Ajout</div>
                     <p>
                         <label for="cnAdd">cn : </label>
@@ -179,22 +179,93 @@
             document.body.removeChild(element);
         }
 
-
         document.getElementById("modifGroup").addEventListener("click", async function () {
             document.getElementById("modifGroupForm").style.display = "block";
             document.getElementById("deleteGroupForm").style.display = "none";
             document.getElementById("addGroupForm").style.display = "none";
         });
+
         document.getElementById("deleteGroup").addEventListener("click", async function () {
             document.getElementById("deleteGroupForm").style.display = "block";
             document.getElementById("modifGroupForm").style.display = "none";
             document.getElementById("addGroupForm").style.display = "none";
         });
+
         document.getElementById("addGroup").addEventListener("click", async function () {
             document.getElementById("addGroupForm").style.display = "block";
             document.getElementById("deleteGroupForm").style.display = "none";
             document.getElementById("modifGroupForm").style.display = "none";
         });
+
+        $("#addForm").submit(function (e) {
+            var data = {
+                "cn": $("#cnAdd").val(),
+                "description": $("#descriptionAdd").val()
+            };
+
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                url: "http://localhost:3000/groups",
+                data: JSON.stringify({ ...data }),
+                success: function (result) {
+                    fillUsersTable();
+                },
+                error: function (result) {
+                    alert('An error occured. Verify that you are connected to the LDAP server.');
+                    console.error(result);
+                }
+            });
+        });
+
+        $("#modifForm").submit(function (e) {
+            var data = {
+                "cn": $("#cnModif").val(),
+                "labelGroup": $("#labelGroupModif").val(),
+                "value": $("#valueModif").val()
+            };
+
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                url: "http://localhost:3000/groups/modify",
+                data: JSON.stringify({ uid: data.login, ...data }),
+                success: function (result) {
+                    fillUsersTable();
+                },
+                error: function (result) {
+                    alert('An error occured. Verify that you are connected to the LDAP server.');
+                    console.error(result);
+                }
+            });
+        });
+
+        $("#deleteForm").submit(function (e) {
+            var data = {
+                "cn": $("#cnDelete").val()
+            };
+
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                url: "http://localhost:3000/groups/delete",
+                data: JSON.stringify({ ...data }),
+                success: function (result) {
+                    fillUsersTable();
+                },
+                error: function (result) {
+                    alert('An error occured. Verify that you are connected to the LDAP server.');
+                    console.error(result);
+                }
+            });
+        });
+
     </script>
 
 </body>
