@@ -15,6 +15,7 @@
             <li><a href="connect.html">Connexion</a></li>
             <li><a href="users.html">Utilisateurs</a></li>
             <li><a href="groups.html">Groupes</a></li>
+            <li><a href="disconnect.html">Déconnexion</a></li>
         </ul>
     </div>
 
@@ -33,7 +34,7 @@
                     <div class="form-title">Modification</div>
                     <p>
                         <label for="cn">cn : </label>
-                        <input type="text" name="cnModif" id="cn" />
+                        <input type="text" name="cnModif" id="cnModif" />
                     </p>
 
                     <p>
@@ -104,6 +105,8 @@
 
     <script>
 
+        const ldapUrl = 'http://localhost:3000/';
+
         $(document).ready(function () {
             fillGroupsTable();
         });
@@ -112,7 +115,7 @@
             $("#table-groups tr").remove();
             $("#table-groups").append("<tr><th>cn</th><th>gidNumber</th><th>memberUid(s) si existe(nt)</th><th>description (si renseignée)</th></tr>");
             $.ajax({
-                url: "http://localhost:3000/groups",
+                url: ldapUrl + "groups",
                 success: function (result) {
                     for (var i = 0; i < result.length; i++) {
                         var cn = result[i].cn;
@@ -157,7 +160,7 @@
 
         async function exportJson(exportResult) {
             $.ajax({
-                url: "http://localhost:3000/groups/exportJson",
+                url: ldapUrl + "groups/exportJson",
                 async: false,
                 success: function (result) {
                     exportResult.push(result);
@@ -208,7 +211,7 @@
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: "text",
-                url: "http://localhost:3000/groups",
+                url: ldapUrl + "groups",
                 data: JSON.stringify({ ...data }),
                 success: function (result) {
                     fillGroupsTable();
@@ -223,8 +226,7 @@
         $("#modifForm").submit(function (e) {
             var data = {
                 "cn": $("#cnModif").val(),
-                "labelGroup": $("#labelGroupModif").val(),
-                "value": $("#valueModif").val()
+                [$("#labelGroupModif").val()]: $("#valueModif").val()
             };
 
             e.preventDefault();
@@ -232,8 +234,8 @@
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 dataType: "text",
-                url: "http://localhost:3000/groups/modify",
-                data: JSON.stringify({ uid: data.login, ...data }),
+                url: ldapUrl + "groups/modify",
+                data: JSON.stringify({ cn: data.cn, ...data }),
                 success: function (result) {
                     fillGroupsTable();
                     alert('Success. Refresh page to see results.');
@@ -255,7 +257,7 @@
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: "text",
-                url: "http://localhost:3000/groups/delete",
+                url: ldapUrl + "groups/delete",
                 data: JSON.stringify({ ...data }),
                 success: function (result) {
                     fillGroupsTable();

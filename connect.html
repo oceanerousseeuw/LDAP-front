@@ -15,6 +15,7 @@
             <li><a href="connect.html">Connexion</a></li>
             <li><a href="users.html">Utilisateurs</a></li>
             <li><a href="groups.html">Groupes</a></li>
+            <li><a href="disconnect.html">Déconnexion</a></li>
         </ul>
     </div>
 
@@ -44,6 +45,9 @@
     </div>
 
     <script>
+
+        const ldapUrl = 'http://localhost:3000/';
+        
         $("#connect").submit(function (e) {
             var myData = {
                 "username": $("#username").val(),
@@ -57,7 +61,7 @@
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     dataType: "text",
-                    url: "http://localhost:3000/connect",
+                    url: ldapUrl + "connect",
                     data: JSON.stringify({ ...myData }),
                     success: function (result) {
                         var currentUrl = window.location;

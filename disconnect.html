@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <ul>
+            <li><a href="index.html">Index</a></li>
+            <li><a href="connect.html">Connexion</a></li>
+            <li><a href="users.html">Utilisateurs</a></li>
+            <li><a href="groups.html">Groupes</a></li>
+            <li><a href="disconnect.html">Déconnexion</a></li>
+        </ul>
+    </div>
+
+    <div class="page-content">
+
+        <h1>Déconnexion</h1>
+
+        <form id="disconnect" method="post">
+            <p>
+                <input type="submit" value="Déconnexion">
+            </p>
+        </form>
+
+        <a href="index.html" class="button">Retour</a>
+
+    </div>
+
+    <script>
+
+        const ldapUrl = 'http://localhost:3000/';
+
+        $("#disconnect").submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                url: ldapUrl + "disconnect",
+                success: function (result) {
+                    alert('Disconnected');
+                },
+                error: function (result) {
+                    console.error(result);
+                    alert('Error');
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
