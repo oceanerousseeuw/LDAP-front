@@ -32,7 +32,7 @@
                 <form id="modifForm" method="post">
                     <div class="form-title">Modification</div>
                     <p>
-                        <label for="loginModif">login : </label>
+                        <label for="loginModif">UID : </label>
                         <input type="text" name="loginModif" id="loginModif" />
                     </p>
 
@@ -42,12 +42,12 @@
                     </p>
 
                     <p>
-                        <label for="lastnameModif">lastname : </label>
+                        <label for="lastnameModif">sn : </label>
                         <input type="text" name="lastnameModif" id="lastnameModif" />
                     </p>
 
                     <p>
-                        <label for="firstnameModif">firstname : </label>
+                        <label for="firstnameModif">givenName : </label>
                         <input type="text" name="firstnameModif" id="firstnameModif" />
                     </p>
 
@@ -65,7 +65,7 @@
                 <form id="deleteForm" method="post">
                     <div class="form-title">Suppression</div>
                     <p>
-                        <label for="uidDelete">Uid : </label>
+                        <label for="uidDelete">UID : </label>
                         <input type="text" name="uidDelete" id="uidDelete" />
                     </p>
 
@@ -83,7 +83,7 @@
                 <form id="addForm" method="post">
                     <div class="form-title">Ajout</div>
                     <p>
-                        <label for="loginAdd">login : </label>
+                        <label for="loginAdd">UID : </label>
                         <input type="text" name="loginAdd" id="loginAdd" />
                     </p>
 
@@ -93,12 +93,12 @@
                     </p>
 
                     <p>
-                        <label for="lastnameAdd">lastname : </label>
+                        <label for="lastnameAdd">sn : </label>
                         <input type="text" name="lastnameAdd" id="lastnameAdd" />
                     </p>
 
                     <p>
-                        <label for="firstnameAdd">firstname : </label>
+                        <label for="firstnameAdd">givenName : </label>
                         <input type="text" name="firstnameAdd" id="firstnameAdd" />
                     </p>
 
@@ -235,6 +235,7 @@
                 data: JSON.stringify({ uid: data.login, ...data }),
                 success: function (result) {
                     fillUsersTable();
+                    alert('Success. Refresh page to see results.');
                 },
                 error: function (result) {
                     alert('An error occured. Verify that you are connected to the LDAP server.');

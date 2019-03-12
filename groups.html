@@ -211,7 +211,7 @@
                 url: "http://localhost:3000/groups",
                 data: JSON.stringify({ ...data }),
                 success: function (result) {
-                    fillUsersTable();
+                    fillGroupsTable();
                 },
                 error: function (result) {
                     alert('An error occured. Verify that you are connected to the LDAP server.');
@@ -235,7 +235,8 @@
                 url: "http://localhost:3000/groups/modify",
                 data: JSON.stringify({ uid: data.login, ...data }),
                 success: function (result) {
-                    fillUsersTable();
+                    fillGroupsTable();
+                    alert('Success. Refresh page to see results.');
                 },
                 error: function (result) {
                     alert('An error occured. Verify that you are connected to the LDAP server.');
@@ -257,7 +258,7 @@
                 url: "http://localhost:3000/groups/delete",
                 data: JSON.stringify({ ...data }),
                 success: function (result) {
-                    fillUsersTable();
+                    fillGroupsTable();
                 },
                 error: function (result) {
                     alert('An error occured. Verify that you are connected to the LDAP server.');
