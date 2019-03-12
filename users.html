@@ -78,6 +78,22 @@
             </div>
         </div>
 
+
+
+        <div>
+            <input type="button" id="deleteAll" class="function-button" value="Supprimer tous" />
+            <div style="display:block;" id="deleteUsersForm">
+                <form id="deleteAllForm" method="post">
+                    <div class="form-title">Supprimer tous</div>
+                    <p>
+                        <input type="submit" value="Valider" id="deleteUsersButton">
+                    </p>
+                </form>
+            </div>
+        </div>
+
+
+
         <div>
             <input type="button" id="addUser" class="function-button" value="ajouter" />
             <div style="display:none;" id="addUserForm">
@@ -259,6 +275,24 @@
                 dataType: "text",
                 url: ldapUrl + "users/delete",
                 data: JSON.stringify({ ...data }),
+                success: function (result) {
+                    fillUsersTable();
+                },
+                error: function (result) {
+                    alert('An error occured. Verify that you are connected to the LDAP server.');
+                    console.error(result);
+                }
+            });
+        });
+
+        $("#deleteAllForm").submit(function (e) {
+            console.log('submit');
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                url: ldapUrl + "users/deleteAll",
                 success: function (result) {
                     fillUsersTable();
                 },
