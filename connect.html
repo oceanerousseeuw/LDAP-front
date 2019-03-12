@@ -63,6 +63,7 @@
                     dataType: "text",
                     url: ldapUrl + "connect",
                     data: JSON.stringify({ ...myData }),
+                    crossDomain: true,
                     success: function (result) {
                         var currentUrl = window.location;
                         var currentUrlSplit = currentUrl.href.split("/");
